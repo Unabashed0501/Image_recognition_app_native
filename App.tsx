@@ -9,6 +9,7 @@ import { MyHomeStack, HomeScreen, ProfileScreen } from "./pages/myHome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import One from "./pages/one";
+import HistoryPage from "./pages/historyPage";
 
 export default function App() {
   // const router = useRouter();
@@ -26,17 +27,23 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Tab.Screen name="Closet" component={ClosetStack} />
+        <Tab.Screen
+          name="Closet"
+          component={ClosetStack}
+          options={{
+            headerShown: false,
+          }}
+        />
         {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
-        <Tab.Screen name="Hello" component={Hello} />
-        <Tab.Screen name="WebSocket" component={WebSocketDemo} /> 
+        <Tab.Screen name="History" component={HistoryPage} />
+        <Tab.Screen name="WebSocket" component={WebSocketDemo} />
       </Tab.Navigator>
     </NavigationContainer>
     // <View style={styles.container}>
     // {/* <Button onPress={() => router.push('/pages/closet')} title="Open Page1" /> */}
     // <Link href="/pages/closet" asChild>
     //   <Button title="Open Page1" />
-    // </Link> 
+    // </Link>
     // {/* // <NavigationContainer>
     // //   <Stack.Navigator initialRouteName="Home">
     // //     <Stack.Screen name="Home" component={Test} />
