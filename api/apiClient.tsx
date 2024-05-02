@@ -1,3 +1,5 @@
+const BASEURL = 'http://localhost:8080';
+
 const queryEmbedding = async (
   values: any[],
   namespace: string
@@ -8,7 +10,7 @@ const queryEmbedding = async (
   };
 
   try {
-    const response = await fetch("/api/query", {
+    const response = await fetch(BASEURL + "/api/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +21,8 @@ const queryEmbedding = async (
     // Check if the response is successful (status code 200-299)
     if (response.ok) {
       // Parse the JSON response and return it
-      return await response.json();
+      const data = await response.json();
+      return data;
     } else {
       // Handle non-successful responses
       throw new Error("Failed to query embedding");
@@ -31,32 +34,22 @@ const queryEmbedding = async (
   }
 };
 
-const saveEmbedding = async (data: any): Promise<any> => {
+const saveEmbedding = async (requestData: any): Promise<any> => {
   // Destructure the data object to extract necessary fields
-  const { id, values, imageUrl, type } = data;
+  // const { id, imageUrl, word, type } = requestData;
 
-  // Construct the request body including metadata
-  const requestBody = {
-    id,
-    values,
-    metadata: {
-      id,
-      imageUrl,
-      type,
-      /* other metadata fields */
-    },
-  };
   try {
-    const response = await fetch("/api/saveEmbedding", {
+    const response = await fetch(BASEURL + "/api/saveEmbedding", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(requestData),
     });
 
     if (response.ok) {
-      return await response.json();
+      const data = await response.json();
+      return data;
     } else {
       throw new Error("Failed to save embedding");
     }
@@ -68,7 +61,7 @@ const saveEmbedding = async (data: any): Promise<any> => {
 
 const deleteNamespace = async (namespace: string): Promise<void> => {
   try {
-    const response = await fetch("/api/deleteNamespace", {
+    const response = await fetch(BASEURL + "/api/deleteNamespace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +69,9 @@ const deleteNamespace = async (namespace: string): Promise<void> => {
       body: JSON.stringify({ namespace }),
     });
 
-    if (!response.ok) {
+    if (response.ok) {
+      console.log("Deleted namespace successfully");
+    } else {
       throw new Error("Failed to delete namespace");
     }
   } catch (error) {
@@ -85,4 +80,25 @@ const deleteNamespace = async (namespace: string): Promise<void> => {
   }
 };
 
-export default { queryEmbedding, saveEmbedding, deleteNamespace };
+async function imageUrlToBase64(url: string): Promise<string> {
+  try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              if (typeof reader.result === 'string') {
+                  resolve(reader.result);
+              } else {
+                  reject(new Error('Failed to convert the image to Base64.'));
+              }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+      });
+  } catch (error) {
+      throw new Error('Failed to fetch the image: ' + error);
+  }
+}
+
+export { queryEmbedding, saveEmbedding, deleteNamespace };
