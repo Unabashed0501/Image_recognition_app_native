@@ -4,4 +4,5 @@
 .env
 /backend/.env
 
+/.expo/
 /.vscode/
