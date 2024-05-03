@@ -64,6 +64,26 @@ const convert_toBase64 = (file: string) => {
   //     .then(dataURI => console.log(dataURI))
 }
 
+async function imageUrlToBase64(url: string): Promise<string> {
+  try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              if (typeof reader.result === 'string') {
+                  resolve(reader.result);
+              } else {
+                  reject(new Error('Failed to convert the image to Base64.'));
+              }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+      });
+  } catch (error) {
+      throw new Error('Failed to fetch the image: ' + error);
+  }
+}
 // convert_toBase64('./2.png')
 
 async function listFiles(dir: string): Promise<string[]> {
@@ -94,4 +114,4 @@ const validateEnvironmentVariables = () => {
   getEnv("PINECONE_REGION");
 };
 
-export { listFiles, sliceIntoChunks, convert_toBase64, validateEnvironmentVariables, chunkArray, chunkedUpsert };
+export { listFiles, sliceIntoChunks, convert_toBase64, imageUrlToBase64, validateEnvironmentVariables, chunkArray, chunkedUpsert };
