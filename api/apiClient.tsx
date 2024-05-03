@@ -79,6 +79,32 @@ const getProcessedImage = async (requestData: any): Promise<any> => {
   }
 };
 
+const updateEmbedding = async (id: string, metadata: Record<string, any>): Promise<void> => {
+  const requestData = {
+      id: id,
+      metadata: metadata,
+  };
+
+  try {
+      const response = await fetch(BASEURL + "/api/updateEmbedding", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+          console.log("Embedding updated successfully");
+      } else {
+          throw new Error("Failed to update embedding");
+      }
+  } catch (error) {
+      console.error("Error updating embedding:", error);
+      throw error;
+  }
+};
+
 const saveEmbedding = async (requestData: any): Promise<any> => {
   // Destructure the data object to extract necessary fields
   // const { id, imageUrl, word, type } = requestData;
@@ -150,6 +176,7 @@ export {
   queryEmbedding,
   queryAllEmbeddings,
   getProcessedImage,
+  updateEmbedding,
   saveEmbedding,
   deleteNamespace,
 };

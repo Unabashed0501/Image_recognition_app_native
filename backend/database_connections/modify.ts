@@ -4,6 +4,7 @@ dotenv.config();
 
 const PINECONE_INDEX: string | undefined = process.env.PINECONE_INDEX;
 const DIMENSION: number = parseInt(process.env.DIMENSION!);
+
 const pineconeClient = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY!,
     // environment: process.env.PINECONE_ENVIRONMENT,

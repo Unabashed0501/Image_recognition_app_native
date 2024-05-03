@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from "express";
 import { WebSocketServer, WebSocket } from 'ws';
-import configure from './routers/index.ts';
+import configure from '../routers/index.ts';
 
 dotenv.config();
 

@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 // import { handleImage, handleDeleteUser, handleEmbedding } from "../handle_image_new.ts";
 import Embedder from "../Model/embedder.ts";
-import { queryEmbedding, queryAllEmbeddings, saveEmbedding, deleteNamespace } from "../database_connections/pinecone.ts";
+import CVPreprocessor from "../Model/cv_preprocessor.ts";
+import { queryEmbedding, queryAllEmbeddings, saveEmbedding, deleteNamespace, updateEmbedding } from "../database_connections/pinecone.ts";
 import { createRequire } from 'module';
 
 export default function api() {
@@ -16,6 +17,14 @@ export default function api() {
             console.log(jsonEmbeddings);
             // res.send("Response");
             res.send(jsonEmbeddings);
+        })
+        .post('/getProcessedImage', async (req: Request, res: Response) => {
+            const { path } = req.body;
+            const cv_preprocessor = new CVPreprocessor();
+            const processedImage = await cv_preprocessor.getProcessedImage(path);
+
+            console.log(processedImage);
+            res.send(processedImage);
         })
         .post('/query', async (req: Request, res: Response) => {
             try {
@@ -40,6 +49,16 @@ export default function api() {
             } catch (error) {
                 console.error('Error querying all embeddings:', error);
                 res.status(500).json({ error: 'Failed to query all embeddings' });
+            }
+        })
+        .post('/updateEmbedding', async (req: Request, res: Response) => {
+            try {
+                const { id, metadata } = req.body;
+                await updateEmbedding(id, metadata);
+                res.status(200).json({ message: `Embedding with ID ${id} has been updated successfully.` });
+            } catch (error) {
+                console.error('Error updating embedding:', error);
+                res.status(500).json({ error: 'Failed to update embedding' });
             }
         })
         .post('/saveEmbedding', async (req: Request, res: Response) => {
