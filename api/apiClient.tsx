@@ -1,4 +1,4 @@
-const BASEURL = 'http://localhost:8080';
+const BASEURL = "http://localhost:8080";
 
 const queryEmbedding = async (
   values: any[],
@@ -31,6 +31,51 @@ const queryEmbedding = async (
     // Handle errors that occur during the request
     console.error("Error querying embedding:", error);
     throw error; // Propagate the error to the caller
+  }
+};
+
+const queryAllEmbeddings = async (): Promise<any[]> => {
+  try {
+    const response = await fetch(BASEURL + "/api/queryAll", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      // Parse the JSON response and return it
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      throw new Error("Failed to query all embeddings");
+    }
+  } catch (error) {
+    console.error("Error querying all embeddings:", error);
+    throw error;
+  }
+};
+
+const getProcessedImage = async (requestData: any): Promise<any> => {
+  try {
+    const response = await fetch(BASEURL + "/api/getProcessedImage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Failed to get processed image");
+    }
+  } catch (error) {
+    console.error("Error getting processed image:", error);
+    throw error;
   }
 };
 
@@ -82,23 +127,29 @@ const deleteNamespace = async (namespace: string): Promise<void> => {
 
 async function imageUrlToBase64(url: string): Promise<string> {
   try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-              if (typeof reader.result === 'string') {
-                  resolve(reader.result);
-              } else {
-                  reject(new Error('Failed to convert the image to Base64.'));
-              }
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-      });
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          resolve(reader.result);
+        } else {
+          reject(new Error("Failed to convert the image to Base64."));
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   } catch (error) {
-      throw new Error('Failed to fetch the image: ' + error);
+    throw new Error("Failed to fetch the image: " + error);
   }
 }
 
-export { queryEmbedding, saveEmbedding, deleteNamespace };
+export {
+  queryEmbedding,
+  queryAllEmbeddings,
+  getProcessedImage,
+  saveEmbedding,
+  deleteNamespace,
+};
