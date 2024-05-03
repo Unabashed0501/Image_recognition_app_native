@@ -1,5 +1,10 @@
 /node_modules/
 /backend/node_modules/
 
-.env
+*/.env
 /backend/.env
+
+/.expo/
+/.vscode/
+/ios/
+/.DS_Store/
