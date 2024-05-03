@@ -82,3 +82,4 @@ const queryAllEmbeddings = async () => {
 };
 
 export { queryEmbedding, queryAllEmbeddings };
+

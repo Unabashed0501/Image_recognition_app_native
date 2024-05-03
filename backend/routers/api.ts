@@ -1,8 +1,10 @@
 import { Router, Request, Response } from 'express';
 // import { handleImage, handleDeleteUser, handleEmbedding } from "../handle_image_new.ts";
 import Embedder from "../Model/embedder.ts";
+
 import CVPreprocessor from "../Model/cv_preprocessor.ts";
 import { queryEmbedding, queryAllEmbeddings, saveEmbedding, deleteNamespace, updateEmbedding } from "../database_connections/pinecone.ts";
+
 import { createRequire } from 'module';
 
 export default function api() {
