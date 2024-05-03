@@ -46,10 +46,13 @@ export default class Embedder {
         body: JSON.stringify(data),
       });
 
-      const json = await response.json() as any;
+      console.log(response);
+      const json = await response.json();
       console.log("json: ", json);
-      const embeddings = json.embeddings;
 
+      const embeddings = (json as { embeddings: number[] }).embeddings;
+      console.log("embeddings:", embeddings);
+      
       return embeddings;
     } catch (e) {
       console.log('Failed to get embeddings', e);

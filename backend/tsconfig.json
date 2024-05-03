@@ -1,11 +1,15 @@
 {
-    "module": "ESNext",
+    "module": "esnext",
     "ts-node": {
         "transpileOnly": true,
-        "esm": true // assign ts-node executed by esm
-      },
+        "esm": true,
+        "compiler": "typescript",
+        "experimentalSpecifierResolution": "node",
+    },
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES2020",
+        // "module": "NodeNext",
+        // "moduleResolution": "nodenext",
         "lib": [
             "dom",
             "dom.iterable",
@@ -25,11 +29,6 @@
         "noImplicitAny": false,
         "jsx": "preserve",
         "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
         "paths": {
             "@/*": [
                 "./*"
@@ -40,8 +39,9 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        ".next/types/**/*.ts", 
-        "backend/types/index.ts",
+        ".next/types/**/*.ts",
+        // "backend/src/index.ts",
+        "backend/src/*", "../api/apiClient.tsx",
     ],
     "exclude": [
         "node_modules"
