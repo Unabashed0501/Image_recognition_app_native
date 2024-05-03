@@ -3512,7 +3512,7 @@ data-uri-to-buffer@^3.0.1:
 
 data-uri-to-buffer@^4.0.0:
   version "4.0.1"
-  resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
 
 data-view-buffer@^1.0.1:
@@ -3679,9 +3679,9 @@ dotenv-expand@~11.0.6:
   dependencies:
     dotenv "^16.4.4"
 
-dotenv@^16.4.4, dotenv@~16.4.5:
+dotenv@^16.4.4, dotenv@^16.4.5, dotenv@~16.4.5:
   version "16.4.5"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.5.tgz"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
 ee-first@1.1.1:
@@ -3934,6 +3934,11 @@ expo-asset@~9.0.2:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-blur@^12.9.2:
+  version "12.9.2"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-12.9.2.tgz#16d27c5d446fde0442d4f11d38b69611ca29f26b"
+  integrity sha512-q+EIOkXw7OCE3VBTLRANsUIdMxtFWDTFpaMulJEXMwtxNQaCcAvzHZvwWP9dlI96FM4A6UdX2/slBNfNJzJcCQ==
+
 expo-constants@~15.4.0, expo-constants@~15.4.3:
   version "15.4.6"
   resolved "https://registry.npmjs.org/expo-constants/-/expo-constants-15.4.6.tgz"
@@ -3975,6 +3980,11 @@ expo-linking@^6.2.2:
   dependencies:
     expo-constants "~15.4.3"
     invariant "^2.2.4"
+
+expo-location@^16.5.5:
+  version "16.5.5"
+  resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-16.5.5.tgz#3db84f5fecf8cbfdff1e3dbe06fdc823a56bc02c"
+  integrity sha512-dXEd1HaZgdi6yHVF8R+SMnGlKDYrD+Hkkzd/b9edjMSUBLxF2y824AFSSNUf6BVOM53tJBOFEELneXkU1uj9nA==
 
 expo-manifests@~0.13.0:
   version "0.13.2"
@@ -4179,7 +4189,7 @@ fbjs@^3.0.0:
 
 fetch-blob@^3.1.2, fetch-blob@^3.1.4:
   version "3.2.0"
-  resolved "https://registry.npmjs.org/fetch-blob/-/fetch-blob-3.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/fetch-blob/-/fetch-blob-3.2.0.tgz#f09b8d4bbd45adc6f0c20b7e787e793e309dcce9"
   integrity sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==
   dependencies:
     node-domexception "^1.0.0"
@@ -4314,7 +4324,7 @@ form-data@^3.0.1:
 
 formdata-polyfill@^4.0.10:
   version "4.0.10"
-  resolved "https://registry.npmjs.org/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz"
+  resolved "https://registry.yarnpkg.com/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz#24807c31c9d402e002ab3d8c720144ceb8848423"
   integrity sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==
   dependencies:
     fetch-blob "^3.1.2"
@@ -4730,6 +4740,11 @@ inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
+
+inherits@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
+  integrity sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==
 
 ini@~1.3.0:
   version "1.3.8"
@@ -5394,6 +5409,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-react-native@^6.7.2:
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-6.7.2.tgz#615fc16f88970fcbdf63699537f499b5937afe8a"
+  integrity sha512-MZVx6N1EeO/EaSx8T44mJ0aHc5Mqee+xIfWwszni0oz8U2wlHdaWGjES44dHxaxgAp/0dRaFt3PkpZ6egTzcBg==
+
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz"
@@ -5869,7 +5889,7 @@ node-dir@^0.1.17:
 
 node-domexception@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
 
 node-fetch@^2.2.0, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.12, node-fetch@^2.6.7:
@@ -5881,7 +5901,7 @@ node-fetch@^2.2.0, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.12, nod
 
 node-fetch@^3.3.2:
   version "3.3.2"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.3.2.tgz#d1e889bacdf733b4ff3b2b243eb7a12866a0b78b"
   integrity sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==
   dependencies:
     data-uri-to-buffer "^4.0.0"
@@ -6201,6 +6221,14 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+path@^0.12.7:
+  version "0.12.7"
+  resolved "https://registry.yarnpkg.com/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
+  integrity sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==
+  dependencies:
+    process "^0.11.1"
+    util "^0.10.3"
+
 peek-readable@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/peek-readable/-/peek-readable-5.0.0.tgz"
@@ -6294,6 +6322,11 @@ process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
+
+process@^0.11.1:
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
+  integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
 progress@2.0.3:
   version "2.0.3"
@@ -6464,6 +6497,13 @@ react-is@^18.0.0:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
+
+react-native-card-animated-modal@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-card-animated-modal/-/react-native-card-animated-modal-1.0.3.tgz#c0b41b69b976ed7b4a77266301560db1e3271fee"
+  integrity sha512-YdxW2Hfpypa9PC6DlpAsFGa5/D4zMTsryFFwXTvzMjCXBQxKQdY+5z5Ql8843oXL1fIOTqjZ6eQPc9ROtoetCw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-gesture-handler@^2.16.1:
   version "2.16.1"
@@ -7567,7 +7607,7 @@ typedarray.prototype.slice@^1.0.3:
     typed-array-buffer "^1.0.2"
     typed-array-byte-offset "^1.0.2"
 
-typescript@^5.1.3:
+typescript@^5.4.5:
   version "5.4.5"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.4.5.tgz"
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
@@ -7692,6 +7732,13 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+util@^0.10.3:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
+  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
+  dependencies:
+    inherits "2.0.3"
 
 util@^0.12.3:
   version "0.12.5"
