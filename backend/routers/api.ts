@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 // import { handleImage, handleDeleteUser, handleEmbedding } from "../handle_image_new.ts";
 import Embedder from "../Model/embedder.ts";
-import { queryEmbedding, saveEmbedding, deleteNamespace } from "../database_connections/pinecone.ts";
+import { queryEmbedding, queryAllEmbeddings, saveEmbedding, deleteNamespace } from "../database_connections/pinecone.ts";
 import { createRequire } from 'module';
 
 export default function api() {
@@ -31,6 +31,15 @@ export default function api() {
                 // If an error occurs, send an error response
                 console.error('Error querying embedding:', error);
                 res.status(500).json({ error: 'Failed to query embedding' });
+            }
+        })
+        .post('queryAllEmbeddings', async (req: Request, res: Response) => {
+            try {
+                const result = await queryAllEmbeddings();
+                res.json(result);
+            } catch (error) {
+                console.error('Error querying all embeddings:', error);
+                res.status(500).json({ error: 'Failed to query all embeddings' });
             }
         })
         .post('/saveEmbedding', async (req: Request, res: Response) => {
