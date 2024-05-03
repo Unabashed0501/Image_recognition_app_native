@@ -55,4 +55,29 @@ const queryEmbedding = async ({ values, namespace }: QueryEmbeddingParams): Prom
     }
 };
 
+const queryAllEmbeddings = async () => {
+    const index = pineconeClient.Index(PINECONE_INDEX!);
+    const queryRequest = {
+        topK: 1000, // Adjust as needed to potentially retrieve more matches
+        vector: [], 
+        includeMetadata: true,
+        includeValues: true,
+    };
+
+    try {
+        const queryResult = await index.query(queryRequest);
+        return queryResult.matches?.map(match => {
+            const metadata = match?.metadata;
+            const label = metadata?.label ? String(metadata.label) : "Unknown";
+            return {
+                label: label,
+                metadata: metadata
+            };  
+        });
+    } catch (error) {
+        console.error("Failed to query embeddings:", error);
+        throw new Error("Failed to query embeddings from the Pinecone index");
+    }
+};
+
 export { queryEmbedding };

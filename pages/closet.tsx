@@ -14,8 +14,8 @@ import useWebSocket, { ReadyState } from "react-native-use-websocket";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Catagory from "../components/catagory";
 import MyClothesCard from "../components/myClothesCard";
-import Header from "../components/header";
-import data from "../data/data.json";
+// import Header from "../components/header";
+// import data from "../data/data.json";
 import { useNavigation } from "expo-router";
 import { useFonts } from "@expo-google-fonts/poppins";
 import {

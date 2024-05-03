@@ -8,7 +8,6 @@ import ClosetStack from "./pages/closet";
 import { MyHomeStack, HomeScreen, ProfileScreen } from "./pages/myHome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import One from "./pages/one";
 import HistoryPage from "./pages/historyPage";
 
 export default function App() {
