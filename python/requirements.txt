@@ -1,4 +1,3 @@
-supervision
 numpy
 opencv-python
-inference_sdk
+ultralytics
