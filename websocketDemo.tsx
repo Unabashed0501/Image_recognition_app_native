@@ -13,8 +13,8 @@ import {
 } from "react-native";
 
 const WebSocketDemo: React.FC = () => {
-  const [socketUrl, setSocketUrl] = useState("ws://localhost:8080");
-  // const [socketUrl, setSocketUrl] = useState("ws://192.168.10.50:81");
+  // const [socketUrl, setSocketUrl] = useState("ws://localhost:8080");
+  const [socketUrl, setSocketUrl] = useState("ws://10.10.2.100:81");
   const messageHistory = useRef<any[]>([]);
   const [base64Image, setBase64Image] = useState<string>("");
 

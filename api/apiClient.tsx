@@ -58,13 +58,14 @@ const queryAllEmbeddings = async (): Promise<any[]> => {
 };
 
 const getProcessedImage = async (requestData: any): Promise<any> => {
+  const { path } = requestData;
   try {
     const response = await fetch(BASEURL + "/api/getProcessedImage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestData),
+      body: JSON.stringify(path),
     });
 
     if (response.ok) {
@@ -79,29 +80,32 @@ const getProcessedImage = async (requestData: any): Promise<any> => {
   }
 };
 
-const updateEmbedding = async (id: string, metadata: Record<string, any>): Promise<void> => {
+const updateEmbedding = async (
+  id: string,
+  metadata: Record<string, any>
+): Promise<void> => {
   const requestData = {
-      id: id,
-      metadata: metadata,
+    id: id,
+    metadata: metadata,
   };
 
   try {
-      const response = await fetch(BASEURL + "/api/updateEmbedding", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-      });
+    const response = await fetch(BASEURL + "/api/updateEmbedding", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
 
-      if (response.ok) {
-          console.log("Embedding updated successfully");
-      } else {
-          throw new Error("Failed to update embedding");
-      }
+    if (response.ok) {
+      console.log("Embedding updated successfully");
+    } else {
+      throw new Error("Failed to update embedding");
+    }
   } catch (error) {
-      console.error("Error updating embedding:", error);
-      throw error;
+    console.error("Error updating embedding:", error);
+    throw error;
   }
 };
 

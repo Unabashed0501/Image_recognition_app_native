@@ -8,7 +8,7 @@ from inference_sdk import InferenceHTTPClient
 
 
 class EndpointHandler:
-    def __init__(self):  # pass api key to model
+    def __init__(self, key):  # pass api key to model
         pass
 
     def __call__(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -17,7 +17,9 @@ class EndpointHandler:
         path = inputs.get("path")
         key = inputs.get("key")
         ###########################  Load Image  #################################
+        print("load image")
         CLIENT = InferenceHTTPClient(api_url="https://detect.roboflow.com", api_key=key)
+        print("get client")
         if isurl:  # for url set isurl = 1
             req = urllib.request.urlopen(path)
             arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
@@ -31,7 +33,9 @@ class EndpointHandler:
         # can try:
         # clothing-segmentation-dataset/1
         # t-shirts-detector/1
+        # clothing-detection-s4ioc/6
         # mainmodel/2
+        print("start model detection")
         result = CLIENT.infer(path, model_id="mainmodel/2")
         detections = sv.Detections.from_inference(result)
         # print(detections)
@@ -40,6 +44,7 @@ class EndpointHandler:
         ###########################  Data proccessing  #################################
         # only pass the first detection
         # change 1 -> to len(detections.xyxy) to pass all photos
+        print("Data processing")
         if detections.confidence.size == 0:
             return "Not Found"
         else:
@@ -60,14 +65,15 @@ class EndpointHandler:
 ###########################################################################
 
 
-# data = {
-#     "inputs": {
-#         "isurl": True,
-#         "path": "http://192.168.10.20/cam-hi.jpg",
-#         "key": "iJuYzEzNEFSaQq4e0hfE",
-#     }
-# }
+data = {
+    "inputs": {
+        "isurl": True,
+        "path": "http://10.10.2.100/cam-lo.jpg",
+        # "path": "https://www.next.us/nxtcms/resource/blob/5791586/ee0fc6a294be647924fa5f5e7e3df8e9/hoodies-data.jpg",
+        "key": "iJuYzEzNEFSaQq4e0hfE",
+    }
+}
 
-# #  test run
-# Model = EndpointHandler()
-# print(Model(data))
+#  test run
+Model = EndpointHandler("")
+print(Model(data))

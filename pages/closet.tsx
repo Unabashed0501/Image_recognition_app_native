@@ -65,14 +65,14 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
   );
   const displayTabContent = () => {
     switch (activeTab) {
-      case "Qualifications":
-        return <Text>Qualifications</Text>;
+      case "Shirts":
+        return <Text>Shirts</Text>;
 
-      case "About":
-        return <Text>About</Text>;
+      case "All":
+        return <Text>All</Text>;
 
-      case "Responsibilities":
-        return <Text>Responsibility</Text>;
+      case "Pants":
+        return <Text>Pants</Text>;
 
       default:
         return null;

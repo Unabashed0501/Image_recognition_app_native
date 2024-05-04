@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 dotenv.config();
 
 const inferenceEndpointUrl: string = process.env.INFERENCE_ENDPOINT_CV!;
-const inferenceEndpointToken: string = process.env.INFERENCE_ENDPOINT_TOKEN!;
+const inferenceEndpointToken: string = process.env.INFERENCE_ENDPOINT_TOKEN_CV!;
 const MODEL_API_KEY: string = process.env.MODEL_API_KEY!;
 
 console.log(MODEL_API_KEY)
@@ -25,7 +25,6 @@ export default class CVPreprocessor {
                 isurl: true,
                 key: MODEL_API_KEY,
             }
-            
         };
         console.log("data: ", data);
         try {
@@ -49,9 +48,10 @@ export default class CVPreprocessor {
                 throw new Error(`Failed to call API: ${response.statusText}`);
             }
 
-            console.log(response);
+            const resData = await response.json();
+            console.log(resData);
             // Parse and return the response JSON
-            return await response.json();
+            return resData;
         } catch (error) {
             console.error('Failed to call API:', error);
             throw error;

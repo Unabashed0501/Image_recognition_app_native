@@ -18,7 +18,9 @@ const MyHomeStack = () => {
 
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Home">
+        {(props) => <HomeScreen {...props} cureentlocation={cureentlocation} />}
+      </Stack.Screen>
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Weather" component={WeatherScreen} />
     </Stack.Navigator>
