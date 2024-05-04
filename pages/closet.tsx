@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,7 +27,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { FavoritesState, RootState } from "../redux/reducers";
 import FavoriteItemsPage from "./favoriteItemsPage";
 
-const tabs = ["About", "Qualifications", "Responsibilities"];
+const tabs = ["All", "Shirts", "Pants", "Accessories"];
 
 interface Product {
   id: string;
@@ -54,51 +56,110 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
   const [selectedCategory, setSelectedCategory] = useState("Shirts");
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [fontsLoaded, fontError] = useFonts({
-    "Poppins-Regular": require("../assets/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/Poppins-Medium.ttf"),
-    "Poppins-Bold": require("../assets/Poppins-Bold.ttf"),
-  });
+  // const [fontsLoaded, fontError] = useFonts({
+  //   "Poppins-Regular": require("../assets/Poppins-Regular.ttf"),
+  //   "Poppins-Medium": require("../assets/Poppins-Medium.ttf"),
+  //   "Poppins-Bold": require("../assets/Poppins-Bold.ttf"),
+  // });
   const dispatch = useDispatch();
   const favoriteItems = useSelector(
     (state: FavoritesState) => state.favoriteItems
   );
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    // Set isRefreshing to true to indicate that a refresh is in progress
+    setIsRefreshing(true);
+
+    // Perform your refresh logic here, such as fetching new data from an API
+    fetchProducts();
+    // Once the refresh is complete, set isRefreshing back to false
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000); // Simulating a delay for demonstration purposes
+  };
+
+  // const displayTabContent = () => {
+  //   switch (activeTab) {
+  //     case "Shirts":
+  //       return <Text>Shirts</Text>;
+
+  //     case "All":
+  //       return <Text>All</Text>;
+
+  //     case "Pants":
+  //       return <Text>Pants</Text>;
+
+  //     default:
+  //       return null;
+  //   }
+  // };
   const displayTabContent = () => {
     switch (activeTab) {
       case "Shirts":
-        return <Text>Shirts</Text>;
+        return renderProductsByType("Shirt");
 
       case "All":
-        return <Text>All</Text>;
+        return renderProductsByType();
 
       case "Pants":
-        return <Text>Pants</Text>;
+        return renderProductsByType("Pants");
+
+      case "Accessories":
+        return renderProductsByType("Accessories");
 
       default:
         return null;
     }
   };
+  const renderProductsByType = (type?: string) => {
+    return (
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <View>
+              <Text style={styles.headingText}>Match Your Style</Text>
+            </View>
+          </>
+        }
+        data={
+          type ? products.filter((product) => product.type === type) : products
+        }
+        numColumns={2}
+        renderItem={({ item }) => (
+          <MyClothesCard
+            item={item}
+            handleClothesClick={handleClothesClick}
+            toggleFavorite={() => toggleFavorite(item)}
+          />
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const allEmbeddings = await queryAllEmbeddings();
+      console.log(allEmbeddings);
+      // Transform the data into the required format (id, isFavorite, imageUrl, type)
+      const transformedProducts: Product[] = allEmbeddings.map(
+        (embedding: any) => ({
+          id: embedding.metadata.id,
+          isFavorite: false, // You may set this to true based on some logic
+          imageUrl: embedding.metadata.imageUrl,
+          type: embedding.metadata.type,
+          title: embedding.metadata.title,
+        })
+      );
+      setProducts(transformedProducts);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const allEmbeddings = await queryAllEmbeddings();
-        console.log(allEmbeddings);
-        // Transform the data into the required format (id, isFavorite, imageUrl, type)
-        const transformedProducts: Product[] = allEmbeddings.map(
-          (embedding: any) => ({
-            id: embedding.metadata.id,
-            isFavorite: false, // You may set this to true based on some logic
-            imageUrl: embedding.metadata.imageUrl,
-            type: embedding.metadata.type,
-            title: embedding.metadata.title,
-          })
-        );
-        setProducts(transformedProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
   }, []);
 
@@ -106,9 +167,9 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
     console.log("Favorite Items:", favoriteItems);
   }, [favoriteItems]);
 
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
+  // if (!fontsLoaded && !fontError) {
+  //   return null;
+  // }
 
   const handleClothesClick = () => {
     // navigation.navigate("ClosetDetails", { isFavorite: true });
@@ -142,36 +203,14 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-
-        {displayTabContent()}
       </View>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            {/* <Header isCart={false} /> */}
-            <View>
-              <Text style={styles.headingText}>Match Your Style</Text>
-              <View style={styles.inputContainer}>
-                <Image
-                  source={require("../assets/images/search.png")}
-                  style={styles.searchIcon}
-                />
-                <TextInput placeholder="Search" style={styles.textInput} />
-              </View>
-            </View>
-          </>
-        }
-        data={products}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <MyClothesCard
-            item={item}
-            handleClothesClick={handleClothesClick}
-            toggleFavorite={() => toggleFavorite(item)}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
+      {isRefreshing && <ActivityIndicator size="large" color="#B2BABB" />}
+      {!isRefreshing && (
+        <TouchableOpacity onPress={handleRefresh}>
+          <Text style={styles.textInput}>Refresh Data</Text>
+        </TouchableOpacity>
+      )}
+      {displayTabContent()}
     </View>
   );
 };
@@ -209,5 +248,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 18,
+    padding: 10,
   },
 });

@@ -19,6 +19,7 @@ import {
   createStackNavigator,
 } from "@react-navigation/stack";
 import HistoryDetails from "./historyDetails";
+import { queryAllEmbeddings } from "../api/apiClient";
 
 interface Job {
   job_id: string;
@@ -26,6 +27,15 @@ interface Job {
   job_employment_type: string;
   employer_logo: string;
   // Add more properties as needed
+}
+interface Data {
+  metadata: {
+    id: string;
+    date: string;
+    title: string;
+    type: string;
+  };
+  label: string;
 }
 
 const localData: Job[] = [
@@ -63,12 +73,14 @@ const HistoryPage: React.FC<{
   navigation: StackNavigationProp<RootStackParamList>;
 }> = ({ navigation }) => {
   const params = useLocalSearchParams();
-//   const router = useRouter();
+  //   const router = useRouter();
 
   const [searchResult, setSearchResult] = useState<Job[]>([]);
   const [searchLoader, setSearchLoader] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
   const [page, setPage] = useState<number>(1);
+  const [filteredResults, setFilteredResults] = useState<Job[]>([]);
+  const [data, setData] = useState<Data[]>([]);
 
   const handleSearch = () => {
     setSearchLoader(true);
@@ -84,8 +96,31 @@ const HistoryPage: React.FC<{
     }
   };
 
+  const handleQueryAll = async () => {
+    const tmpdata = await queryAllEmbeddings();
+    setData(tmpdata);
+    // const filteredResults = data.filter((item) => {
+    //   // Assuming metadata.postedDate is a property representing the date when the item was posted
+    //   const postedDate = new Date(item.metadata.date[0]);
+    //   const currentDate = new Date();
+    //   const differenceInDays = Math.floor(
+    //     (currentDate - postedDate) / (1000 * 60 * 60 * 24)
+    //   );
+
+    //   // Display all items from now to the past
+    //   return differenceInDays <= days && differenceInDays >= 0;
+    // });
+    // setFilteredResults(filteredResults);
+    // console.log(filteredResults);
+    data.sort((a, b) => {
+      // Assuming metadata.id is a string representation of the id
+      return parseInt(a.metadata.id) - parseInt(b.metadata.id);
+    });
+  };
+
   useEffect(() => {
     handleSearch();
+    handleQueryAll();
   }, []);
 
   return (
@@ -106,16 +141,16 @@ const HistoryPage: React.FC<{
       /> */}
 
       <FlatList
-        data={searchResult}
+        data={data}
         renderItem={({ item }) => (
           <HistoryCard
             job={item}
             handleNavigate={() =>
-              navigation.navigate("HistoryDetails", { id: item.job_id })
+              navigation.navigate("HistoryDetails", { id: item.metadata.id })
             }
           />
         )}
-        keyExtractor={(item) => item.job_id}
+        keyExtractor={(item) => item.metadata.id}
         contentContainerStyle={{ padding: SIZES.medium, rowGap: SIZES.medium }}
         ListHeaderComponent={() => (
           <>
