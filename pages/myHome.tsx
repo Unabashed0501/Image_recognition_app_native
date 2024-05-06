@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   StyleSheet,
   Modal,
+  Image,
+  ScrollView,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -24,6 +26,8 @@ import {
   getProcessedImage,
   queryEmbedding,
 } from "../api/apiClient";
+import EditableProfilePage from "./profilePage";
+import { useNavigation } from "expo-router";
 
 const MyHomeStack = () => {
   const Stack = createStackNavigator();
@@ -39,7 +43,7 @@ const MyHomeStack = () => {
       <Stack.Screen name="Home">
         {(props) => <HomeScreen {...props} cureentlocation={cureentlocation} />}
       </Stack.Screen>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={EditableProfilePage} />
       <Stack.Screen name="Weather" component={WeatherScreen} />
       <Stack.Screen name="Favorite" component={FavoriteItemsPage} />
       <Stack.Screen name="UploadImage" component={UploadImagePage} />
@@ -48,6 +52,7 @@ const MyHomeStack = () => {
 };
 
 type RootStackParamList = {
+  Home: undefined;
   Profile: { name: string };
   Weather: undefined;
   Favorite: undefined;
@@ -68,6 +73,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   const [base64Image, setBase64Image] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [queryData, setQueryData] = useState<any>(null);
+  const [selectedData, setSelectedData] = useState<any>(null);
+  const [imageName, setImageName] = useState<any>("");
+  // const navigationpop = useNavigation();
 
   const { sendMessage, lastMessage, readyState, getWebSocket } = useWebSocket(
     socketUrl,
@@ -82,20 +90,47 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
           await handleProcessedImage();
           sendMessage("detected");
         }
+        // if (trimmedStr.localeCompare("start streaming2") === 0) {
+        //   console.log("start streaming2");
+
+        // }
+
+        // setTimeout(() => {
+        handleDisplayImage(message.data.trim());
+        // delay(3000);
+        sendMessage("detected");
+        console.log("sent detected");
+        // }, 5000);
       },
       // Will attempt to reconnect on all close events, such as server shutting down
       shouldReconnect: (closeEvent) => true,
     }
   );
+  const handleDisplayImage = (msg: string) => {
+    console.log("msg: ", msg);
+    setIsModalVisible(true);
+    console.log("delay");
+    if (msg === "1") {
+      setImageName("1");
+    }
+    if (msg === "2") {
+      setImageName("2");
+    }
+    if (msg === "3") {
+      setImageName("3");
+    }
+  };
 
   const handleProcessedImage = async () => {
     setIsModalVisible(true);
     const requestData = {
-      // path: "http://10.10.2.100/cam-lo.jpg",
+      // path: "http://10.10.2.100:80/cam-lo.jpg",
       // path: "https://wtfunk.tw/%E5%A4%A7%E5%B0%8F/P641%E7%B6%A0370.jpg",
       path: "https://www.next.us/nxtcms/resource/blob/5791586/ee0fc6a294be647924fa5f5e7e3df8e9/hoodies-data.jpg",
+      // path: "http://10.10.3.110/cam-lo.jpg",
     };
-    const imageBase64 = await getProcessedImage(requestData);
+    // const imageBase64 = await getProcessedImage(requestData);
+    const imageBase64 = await imageUrlToBase64(requestData.path);
     console.log("get imageBase64:", imageBase64);
     const values = await getEmbedding(imageBase64);
     console.log("values: ", values);
@@ -109,6 +144,27 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     [lastMessage]
   );
 
+  async function imageUrlToBase64(url: string): Promise<string> {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                if (typeof reader.result === 'string') {
+                    resolve(reader.result);
+                } else {
+                    reject(new Error('Failed to convert the image to Base64.'));
+                }
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    } catch (error) {
+        throw new Error('Failed to fetch the image: ' + error);
+    }
+  }
+
   const handleClickSendMessage = React.useCallback(() => {
     sendMessage("start");
     console.log("sent Hello");
@@ -121,11 +177,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     bottomSheetRef.current?.close();
   };
 
+  const handleSelectItem = (item: any) => {
+    console.log("Selected item: ", item);
+    setSelectedData(item);
+  };
+
   return (
     <SafeAreaView>
       <WeatherCard
         location="Your Location"
-        temperature={25} 
+        temperature={25}
         weatherCondition="Sunny"
         onPress={() => navigation.navigate("Weather")}
       />
@@ -152,20 +213,58 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       title="Save Embeddings"
       onPress={() => handleSaveEmbeddings()}
     /> */}
-      <Button title="Open Modal" onPress={() => setIsModalVisible(true)} />
-      <Button title="Send Message" onPress={handleClickSendMessage} />
+      {/* <Button title="Open Modal" onPress={() => setIsModalVisible(true)} /> */}
+      {/* <Button title="Send Message" onPress={handleClickSendMessage} /> */}
+      <Button title="Display" onPress={() => handleDisplayImage("1")} />
+      <Button title="Process Image" onPress={() => handleProcessedImage()} />
       {/* <GestureHandlerRootView>{BottomModal()}</GestureHandlerRootView> */}
-      <Modal visible={isModalVisible} animationType="slide">
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          {queryData &&
-            queryData.map((item: any, index: number) => (
-              <Text key={index}>{item.title}</Text>
-            ))}
-          <Button title="Close Modal" onPress={handleCloseModal} />
-        </View>
+      <Modal
+        style={styles.modalContainer}
+        visible={isModalVisible}
+        animationType="slide"
+      >
+        {imageName === "1" ? (
+          <View style={styles.itemContainer}>
+            <Image
+              source={require("../shirts/white_shirt/result.jpg")}
+              style={styles.image}
+            />
+            <Text style={styles.itemText}>I AM GENIUS</Text>
+            <Text style={styles.itemText}># 1</Text>
+            <Button title="Select" onPress={() => setIsModalVisible(false)} />
+          </View>
+        ) : imageName === "2" ? (
+          <View style={styles.itemContainer}>
+            <Image
+              source={require("../shirts/pants.png")}
+              style={styles.image}
+            />
+            <Text style={styles.itemText}>Blue Pants</Text>
+            <Text style={styles.itemText}># 4</Text>
+            <Button title="Select" onPress={() => setIsModalVisible(false)} />
+          </View>
+        ) : (
+          <View style={styles.itemContainer}>
+            <Image
+              source={require("../shirts/black.png")}
+              style={styles.image}
+            />
+            <Text style={styles.itemText}>MakeNTU T-Shirt</Text>
+            <Text style={styles.itemText}># 2</Text>
+            <Button title="Select" onPress={() => setIsModalVisible(false)} />
+          </View>
+        )}
+        {/* </ScrollView> */}
       </Modal>
+      {queryData && (
+        <View style={styles.selectedItemContainer}>
+          <Text style={styles.selectedItemText}>
+            Selected Item: {selectedData}
+          </Text>
+        </View>
+      )}
+
+      {/* <Button title="Close Modal" onPress={handleCloseModal} /> */}
     </SafeAreaView>
   );
 };
@@ -190,6 +289,36 @@ const styles = StyleSheet.create({
   spacing: {
     height: 30, // Adjust the height for desired spacing
   },
+  image: {
+    width: 200,
+    height: 200,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  itemContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginTop: 150,
+  },
+  itemText: {
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  selectedItemContainer: {
+    marginVertical: 20,
+  },
+  selectedItemText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
 
 export { MyHomeStack, HomeScreen, ProfileScreen };
+function delay(arg0: number) {
+  throw new Error("Function not implemented.");
+}

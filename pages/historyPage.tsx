@@ -81,6 +81,7 @@ const HistoryPage: React.FC<{
   const [page, setPage] = useState<number>(1);
   const [filteredResults, setFilteredResults] = useState<Job[]>([]);
   const [data, setData] = useState<Data[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleSearch = () => {
     setSearchLoader(true);
@@ -94,6 +95,18 @@ const HistoryPage: React.FC<{
     } else if (direction === "right") {
       setPage(page + 1);
     }
+  };
+
+  const handleRefresh = () => {
+    // Set isRefreshing to true to indicate that a refresh is in progress
+    setIsRefreshing(true);
+
+    // Perform your refresh logic here, such as fetching new data from an API
+    handleQueryAll();
+    // Once the refresh is complete, set isRefreshing back to false
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000); // Simulating a delay for demonstration purposes
   };
 
   const handleQueryAll = async () => {
@@ -139,6 +152,11 @@ const HistoryPage: React.FC<{
           headerTitle: "",
         }}
       /> */}
+      {!isRefreshing && (
+        <TouchableOpacity onPress={handleRefresh}>
+          <Text r>Refresh Data</Text>
+        </TouchableOpacity>
+      )}
 
       <FlatList
         data={data}

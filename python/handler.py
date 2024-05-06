@@ -6,6 +6,8 @@ import base64
 from ultralytics import YOLO
 import os
 import gdown
+from PIL import Image
+import io
 
 class EndpointHandler:
     def __init__(self, path='.'):  # pass api key to model
@@ -17,7 +19,6 @@ class EndpointHandler:
         
         self.model = YOLO("./best.pt")
     def __call__(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        os.getcwd()
         inputs = data.get("inputs")
         isurl = inputs.get("isurl")
         path = inputs.get("path")
@@ -71,7 +72,16 @@ class EndpointHandler:
             retval , buffer = cv2.imencode('.jpg', clothes)   
             cv2.imwrite("result.jpg", clothes)  
         # create base 64 object
-        jpg_as_text = base64.b64encode(buffer).decode("utf-8") # Decode bytes to string")
+        jpg_as_text = base64.b64encode(buffer) # Decode bytes to string")
+        # base64_encoded = base64.b64encode(image_bytes).decode("utf-8")
+        
+        # Get the image format
+        image_format = Image.open(io.BytesIO(buffer)).format.lower()
+        
+        # Construct the data URI
+        data_uri = f"data:image/{image_format};base64,{jpg_as_text}"
+        
+        return data_uri
         print("checkpoint 4")
 ###########################################################################
         return jpg_as_text
@@ -80,19 +90,19 @@ class EndpointHandler:
     
     
 #  test run  
-# Model = EndpointHandler()
-# data = {
-#     "inputs": {
-#         "isurl": True,
-#         # "path": "http://10.10.2.100/cam-lo.jpg",
-#         "path": "https://www.next.us/nxtcms/resource/blob/5791586/ee0fc6a294be647924fa5f5e7e3df8e9/hoodies-data.jpg",
-#         # "key": "iJuYzEzNEFSaQq4e0hfE",
-#     }
-# }
+Model = EndpointHandler()
+data = {
+    "inputs": {
+        "isurl": True,
+        "path": "http://10.10.2.100/cam-lo.jpg",
+        # "path": "https://www.next.us/nxtcms/resource/blob/5791586/ee0fc6a294be647924fa5f5e7e3df8e9/hoodies-data.jpg",
+        # "key": "iJuYzEzNEFSaQq4e0hfE",
+    }
+}
 # # test file image
 # print(Model(data))
 
 #test url
-# print(Model("http://10.10.2.100/cam-lo.jpg", 1))
+print(Model(data))
 
 

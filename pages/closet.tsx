@@ -26,6 +26,7 @@ import { addToFavorites, removeFromFavorites } from "../redux/actions";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { FavoritesState, RootState } from "../redux/reducers";
 import FavoriteItemsPage from "./favoriteItemsPage";
+import UpdateDataPage from "./updateDataPage";
 
 const tabs = ["All", "Shirts", "Pants", "Accessories"];
 
@@ -37,6 +38,17 @@ interface Product {
   title: string;
 }
 
+type RootStackParamList = {
+  UpdateDataPage: { item: Product };
+};
+
+// type UpdateDataPageNavigationProp = StackNavigationProp<RootStackParamList, 'UpdateDataPage'>;
+
+// type Props = {
+//   item: Product;
+//   navigation: UpdateDataPageNavigationProp;
+// };
+
 const ClosetStack = () => {
   const Stack = createStackNavigator();
 
@@ -45,6 +57,7 @@ const ClosetStack = () => {
       <Stack.Screen name="Closet" component={Closet} />
       <Stack.Screen name="ClosetDetails" component={ClosetDetails} />
       <Stack.Screen name="Favorites" component={FavoriteItemsPage} />
+      <Stack.Screen name="Updates" component={UpdateDataPage} />
       {/* Add more screens as needed */}
     </Stack.Navigator>
   );
@@ -130,7 +143,7 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
         renderItem={({ item }) => (
           <MyClothesCard
             item={item}
-            handleClothesClick={handleClothesClick}
+            handleClothesClick={() => handleClothesClick(item)}
             toggleFavorite={() => toggleFavorite(item)}
           />
         )}
@@ -171,7 +184,7 @@ const Closet: React.FC<{ navigation: StackNavigationProp<any> }> = ({
   //   return null;
   // }
 
-  const handleClothesClick = () => {
+  const handleClothesClick = (item: Product) => {
     // navigation.navigate("ClosetDetails", { isFavorite: true });
     navigation.navigate("Favorites");
   };

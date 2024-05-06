@@ -1,9 +1,9 @@
 import { StatusBar } from "./node_modules/expo-status-bar/src/StatusBar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { useRouter, Link } from "expo-router";
 import { NavigationContainer } from "@react-navigation/native";
 // import Hello from "./components/hello";
-import WebSocketDemo from "./websocketDemo";
+import WebSocketDemo from "./pages/websocketDemo";
 import ClosetStack from "./pages/closet";
 import { MyHomeStack, HomeScreen, ProfileScreen } from "./pages/myHome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -27,6 +27,19 @@ export default function App() {
             options={{
               title: "Home",
               headerShown: false,
+              tabBarIcon(props) {
+                return (
+                  <Image
+                    source={require("./assets/icons/menu.png")}
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                      tintColor: props.color,
+                    }}
+                  />
+                );
+              },
             }}
           />
           <Tab.Screen
@@ -35,6 +48,19 @@ export default function App() {
             options={{
               title: "Closet",
               headerShown: false,
+              tabBarIcon(props) {
+                return (
+                  <Image
+                    source={require("./assets/icons/share.png")}
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                      tintColor: props.color,
+                    }}
+                  />
+                );
+              },
             }}
           />
           {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
@@ -44,9 +70,22 @@ export default function App() {
             options={{
               title: "History",
               headerShown: false,
+              tabBarIcon(props) {
+                return (
+                  <Image
+                    source={require("./assets/icons/share.png")}
+                    resizeMode="contain"
+                    style={{
+                      width: 25,
+                      height: 25,
+                      tintColor: props.color,
+                    }}
+                  />
+                );
+              },
             }}
           />
-          <Tab.Screen name="WebSocket" component={WebSocketDemo} />
+          {/* <Tab.Screen name="WebSocket" component={WebSocketDemo} /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>

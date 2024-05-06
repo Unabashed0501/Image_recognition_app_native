@@ -38,6 +38,13 @@ const styles = StyleSheet.create<Styles>({
     flex: 1,
     marginHorizontal: SIZES.medium,
   },
+  stextContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    fontSize: SIZES.medium,
+    // marginHorizontal: SIZES.small,
+  },
   jobName: {
     fontSize: SIZES.medium,
     fontFamily: "DMBold",

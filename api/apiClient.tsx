@@ -1,4 +1,29 @@
-const BASEURL = "http://localhost:8080";
+const BASEURL = "http://10.10.2.59:8080";
+
+const getEmbedding = async (imageBase64: string): Promise<any> => {
+  const data = { imageBase64: imageBase64 };
+  try {
+    const response = await fetch(BASEURL + "/api/getEmbedding", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      // Parse the JSON response and return it
+      const resdata = await response.json();
+      // console.log("gggggg", resdata);
+      return resdata as string;
+    } else {
+      throw new Error("Failed to get embeddings");
+    }
+  } catch (error) {
+    console.error("Error getting embeddings:", error);
+    throw error;
+  }
+};
 
 const queryEmbedding = async (
   values: any[],
@@ -65,12 +90,17 @@ const getProcessedImage = async (requestData: any): Promise<any> => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(path),
+      body: JSON.stringify(requestData),
     });
 
     if (response.ok) {
+      console.log("ok");
+      // wrong
       const data = await response.json();
-      return data;
+
+      console.log("data: ", data);
+      const resData = data ? data["str"] : null;
+      return resData;
     } else {
       throw new Error("Failed to get processed image");
     }
@@ -109,14 +139,47 @@ const updateEmbedding = async (
   }
 };
 
-const saveEmbedding = async (requestData: any): Promise<any> => {
-  // Destructure the data object to extract necessary fields
+const dataURLtoFile = (dataurl: any, filename: any) => {
+  const arr = dataurl.split(",");
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n) {
+    u8arr[n - 1] = bstr.charCodeAt(n - 1);
+    n -= 1; // to make eslint happy
+  }
+  return new File([u8arr], filename, { type: mime });
+};
+
+const saveEmbedding = async (
+  imageBase64: string,
+  metadata: Record<string, any>
+): Promise<void> => {
+  const requestData = {
+    imageBase64: imageBase64,
+    metadata: metadata,
+  };
   // const { id, imageUrl, word, type } = requestData;
 
   try {
+    console.log("in save api");
+    // const file = dataURLtoFile(
+    //   imageBase64,
+    //   "image.jpg"
+    //   // "data:image/png;base64,iVBORw0KGgoAAAANSUhEU..."
+    // );
+    // put file into form data
+    // const data = new FormData();
+
+    // data.append("name", "oscar");
+    // data.append("image", imageBase64);
+    // data.append("metadata", JSON.stringify(metadata));
+    // console.log(data.getAll("metadata"));
     const response = await fetch(BASEURL + "/api/saveEmbedding", {
       method: "POST",
       headers: {
+        // "Content-Type": "multipart/form-data",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestData),
@@ -124,6 +187,8 @@ const saveEmbedding = async (requestData: any): Promise<any> => {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data);
+
       return data;
     } else {
       throw new Error("Failed to save embedding");
@@ -177,6 +242,7 @@ async function imageUrlToBase64(url: string): Promise<string> {
 }
 
 export {
+  getEmbedding,
   queryEmbedding,
   queryAllEmbeddings,
   getProcessedImage,

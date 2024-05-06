@@ -188,7 +188,7 @@ const WeatherScreen = () => {
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <LottieView
           source={
-            weather.weather[0].main === "Clouds"
+            (weather.weather[0].main === "Clouds" || weather.weather[0].main === "Rain")
               ? require("../assets/animation/cloudy.json")
               : require("../assets/animation/sunny.json")
           }

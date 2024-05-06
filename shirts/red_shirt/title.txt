@@ -1,0 +1,4 @@
+{
+    title: Harley Davidson Vintage Tee
+    type: t-shirt
+}

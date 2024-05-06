@@ -46,7 +46,7 @@ export default class Embedder {
         body: JSON.stringify(data),
       });
 
-      console.log(response);
+      // console.log(response);
       const json = await response.json();
       console.log("json: ", json);
 

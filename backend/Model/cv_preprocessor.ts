@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 dotenv.config();
 
 const inferenceEndpointUrl: string = process.env.INFERENCE_ENDPOINT_CV!;
-const inferenceEndpointToken: string = process.env.INFERENCE_ENDPOINT_TOKEN_CV!;
+const inferenceEndpointToken: string = process.env.INFERENCE_ENDPOINT_TOKEN!;
 const MODEL_API_KEY: string = process.env.MODEL_API_KEY!;
 
 console.log(MODEL_API_KEY)
@@ -11,7 +11,7 @@ console.log(MODEL_API_KEY)
 interface Inputs {
     path: string;
     isurl: boolean;
-    key: string;
+    // key: string;
 }
 interface Data {
     inputs: Inputs;   
@@ -23,7 +23,6 @@ export default class CVPreprocessor {
             inputs: {
                 path: path,
                 isurl: true,
-                key: MODEL_API_KEY,
             }
         };
         console.log("data: ", data);

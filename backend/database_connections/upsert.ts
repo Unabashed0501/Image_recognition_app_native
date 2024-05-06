@@ -54,7 +54,7 @@ interface SaveEmbeddingParams {
 //     }
 // }
 
-const saveEmbedding = async ({ id, values, metadata, namespace }: SaveEmbeddingParams): Promise<{ message: string }> => {
+const saveEmbedding = async ({ id, values, metadata }: SaveEmbeddingParams): Promise<{ message: string }> => {
     const index = pineconeClient.Index(indexName!);
     const upsertRequest: PineconeRecord[] = [{
         id: id,
@@ -62,6 +62,7 @@ const saveEmbedding = async ({ id, values, metadata, namespace }: SaveEmbeddingP
         metadata: metadata
     }];
     try {
+        console.log("upsertRequest", upsertRequest);
 
         const response = await index.upsert(upsertRequest);
         console.log("response", response);

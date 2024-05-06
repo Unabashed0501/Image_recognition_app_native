@@ -7,6 +7,7 @@ dotenv.config();
 
 // const serverIP = '192.168.10.50';
 // const serverPort = 81;
+const serverIP = '0.0.0.0';
 
 const port: string | number = process.env.PORT || 3000;
 

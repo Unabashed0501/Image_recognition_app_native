@@ -1,0 +1,4 @@
+{
+    title: Lazy Cat Tee 
+    type: t-shirt
+}

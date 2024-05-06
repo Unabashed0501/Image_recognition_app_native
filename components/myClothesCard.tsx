@@ -36,14 +36,14 @@ const MyClothesCard: React.FC<MyClothesCardProps> = ({
   toggleFavorite,
 }) => {
   //   console.log("item: ", item);
-  const [fontsLoaded, fontError] = useFonts({
-    "Poppins-Regular": require("../assets/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("../assets/Poppins-Medium.ttf"),
-    "Poppins-Bold": require("../assets/Poppins-Bold.ttf"),
-  });
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
+  // const [fontsLoaded, fontError] = useFonts({
+  //   "Poppins-Regular": require("../assets/Poppins-Regular.ttf"),
+  //   "Poppins-Medium": require("../assets/Poppins-Medium.ttf"),
+  //   "Poppins-Bold": require("../assets/Poppins-Bold.ttf"),
+  // });
+  // if (!fontsLoaded && !fontError) {
+  //   return null;
+  // }
   return (
     <TouchableOpacity
       style={styles.container}
@@ -59,7 +59,7 @@ const MyClothesCard: React.FC<MyClothesCardProps> = ({
       />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>${item.price}</Text>
+        <Text style={styles.price}>{item.type}</Text>
       </View>
       <View style={styles.likeContainer}>
         <TouchableOpacity
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     color: "#444444",
   },
   price: {
-    fontSize: 18,
+    fontSize: 12,
     // fontFamily: "Poppins-Medium",
   },
   likeContainer: {

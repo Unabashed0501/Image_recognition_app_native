@@ -32,7 +32,7 @@ type QueryOptions = {
 const queryEmbedding = async ({ values, namespace }: QueryEmbeddingParams): Promise<{ label: string; confidence: number }[] | undefined> => {
     const index = pineconeClient.Index(PINECONE_INDEX!);
     const queryRequest: QueryOptions = {
-        topK: 5,
+        topK: 3,
         vector: values,
         includeMetadata: true,
         includeValues: true,
@@ -46,7 +46,7 @@ const queryEmbedding = async ({ values, namespace }: QueryEmbeddingParams): Prom
             const label: string = metadata?.label ? String(metadata.label) : "Unknown";
             return {
                 //   src: metadata ? metadata.imagePath : '',
-                label: label,
+                title: metadata?.title,
                 confidence: match.score || 0,
             };
         });

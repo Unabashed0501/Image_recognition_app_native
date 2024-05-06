@@ -1,0 +1,4 @@
+{
+    title: Armani Exchange Tee 
+    type: t-shirt
+}

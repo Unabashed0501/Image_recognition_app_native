@@ -11,7 +11,8 @@ export default function configure(app: Application) {
             console.log("get Hello world!")
         })
         .use(express.static('public'))
-        .use(bodyParser.json())
+        .use(bodyParser.json({limit: '50mb'}))
+        .use(bodyParser.urlencoded({limit: '50mb', extended: true}))
         .use('/api', api())
         .use('/error', (req, res, next) => {
             next(new Error('Other Error'));

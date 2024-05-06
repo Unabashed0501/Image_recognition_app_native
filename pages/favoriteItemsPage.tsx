@@ -13,8 +13,8 @@ import useWebSocket, { ReadyState } from "react-native-use-websocket";
 import { SHADOWS, SIZES, COLORS } from "../styles/constants";
 
 const FavoriteItemsPage: React.FC = () => {
-  const [socketUrl, setSocketUrl] = useState("ws://localhost:8080");
-  const { sendMessage, lastMessage, readyState, getWebSocket } = useWebSocket(
+  const [socketUrl, setSocketUrl] = useState("ws://10.10.3.110:81");
+  const { sendMessage } = useWebSocket(
     socketUrl,
     {
       onOpen: () => console.log("opened"),
@@ -31,7 +31,7 @@ const FavoriteItemsPage: React.FC = () => {
   const msg = [1, 2, 3];
   const handleClickSendMessage = React.useCallback(() => {
     sendMessage("get ready");
-    console.log("sent Hello");
+    console.log("sent get ready");
   }, []);
 
   // Read data from the store with the useSelector hook
@@ -52,12 +52,14 @@ const FavoriteItemsPage: React.FC = () => {
           </View>
         </View>
       ))}
+      <View style={styles.btnContainer}>
       <TouchableOpacity
         style={styles.btnClick}
         onPress={handleClickSendMessage}
       >
         <Text style={styles.btnText}>Send Message</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -95,7 +97,14 @@ const styles = StyleSheet.create({
     fontFamily: "DMMedium",
     fontWeight: "bold",
     fontSize: SIZES.small,
-    color: "#C3BFCC",
+    color: "white",
+  },
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 20,
+    marginRight: 10,
   },
   image: {
     width: 80,
